@@ -145,6 +145,7 @@ public class wuxiaoDriverDemo2 {
 
 
 				Thread.sleep(3000);
+				Thread.sleep(3000);
 //				driver.findElement(By.xpath("//input[@id='select-key:wenjianm']")).sendKeys("111@126.com");
 
 				driver.findElement(By.xpath("//table[@id='record1']/tbody/tr[1]/td[1]/input[@type='radio']")).click();
