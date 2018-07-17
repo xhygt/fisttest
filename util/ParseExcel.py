@@ -31,7 +31,7 @@ class ParseExcel(object):
             raise e
 
     def getSheetByIndex(self,sheetIndex):
-        #根据 sheet 的索引号获取该 sheet 对象
+        # 根据 sheet 的索引号获取该 sheet 对象
         try:
             sheetname = self.workbook.get_sheet_names()
         except Exception as e:
@@ -55,8 +55,10 @@ class ParseExcel(object):
         # 获取 sheet 中有数据区域的开始列好：
         return  sheet.min_column
 
-    #方法问题，封存。
+        # 方法问题，封存。
+
     def getRow(self,sheet,rowNo):
+
         # 获取 sheet 中某一行，返回的是这一行所有的数据内容组成的 tuple,
         # 下表从 1 开始，sheet.rows[1]表示第一行
         try:
@@ -67,7 +69,7 @@ class ParseExcel(object):
             raise e
 
     def getRows(self,sheet):
-        #遍历表格中的数据
+        # 遍历表格中的数据
         try:
             for row in sheet.iter_rows():
                 for cell in row:
@@ -98,7 +100,71 @@ class ParseExcel(object):
                         rowNo = None,colsNo =None):
         # 获取某个单元格的对象，可以根据单元格所在位置的数字索引，
         # 也可以直接根据Excel 中单元格的编码及坐标
-            aa =1
+        # 如 getCellObject(sheet,coordinate = 'A1') or
+        # getCellObject(sheet,rowNo = 1,colsNo = 2)
+        if coordinate != None:
+
+            try:
+                return  sheet.cell(coordinate = coordinate)
+            except Exception as e:
+                raise e
+        elif coordinate == None and rowNo is None and \
+            colsNo is not None:
+            try:
+                return sheet.cell(row = rowNo,column = colsNo)
+            except Exception as  e:
+                raise e
+        else:
+            raise Exception("Insufficient Coordinates of cell !")
+
+    def writeCell(self,sheet,content,coordinate = None,
+                  rowNo = None,colsNo = None,style = None):
+        # 根据单元格在 Excel 中的编码坐标或者数字索引坐标向单元格中写入数据，
+        # 下标从 1 开始，参数 style 表示字体的颜色的名字，比如 red,green
+        if coordinate is not None:
+            try:
+                sheet.cell(coordinate = coordinate).value = content
+                if style is not None:
+                    sheet.cell(coordinate = coordinate).\
+                        font = Font(color = self.RGBDict[style])
+                    self.workbook.save(self.excelFile)
+            except Exception as e:
+                raise e
+        elif coordinate == None and rowNo is not None and \
+            colsNo is not None:
+            try:
+                sheet.cell(row = rowNo,column = colsNo).value = content
+                if style:
+                    sheet.cell(row = rowNo,column = colsNo).\
+                        font = Font(color = self.RGBDict[style])
+                    self.workbook.save(self.excelFile)
+            except Exception as e:
+                raise e
+        else:
+            raise Exception("Insufficient Coordinates of cell !")
+
+    def writeCellCurrentTime(self,sheet,coordinate = None,
+                             rowNo = None,colsNo =None):
+        # 写如当前的时间，下标从 1开始
+        now = int(time.time())
+        timeArray = time.localtime(now)
+        currentTime = time.strftime("%Y- %m- %d %H: %M: %S",timeArray)
+        if coordinate is not None:
+            try:
+                sheet.cell(coordinate = coordinate).value = currentTime
+                self.workbook.save(self.excelFile)
+            except Exception as e:
+                raise e
+        elif coordinate == None and rowNo is not None \
+            and colsNo is not None:
+            try:
+                sheet.cell(row = rowNo,column = colsNo).value = currentTime
+                self.workbook.save(self.excelFile)
+            except Exception as e:
+                raise e
+        else:
+            raise Exception("Insufficient Coordinates of cell !")
+
 
 if __name__ == '__main__':
     # 测试代码
