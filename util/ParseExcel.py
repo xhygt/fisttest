@@ -94,7 +94,11 @@ class ParseExcel(object):
         else:
             raise Exception("Insufficient Coordinates of cell !")
 
-
+    def getCellOfObject(self,sheet,coordinate = None,
+                        rowNo = None,colsNo =None):
+        # 获取某个单元格的对象，可以根据单元格所在位置的数字索引，
+        # 也可以直接根据Excel 中单元格的编码及坐标
+            aa =1
 
 if __name__ == '__main__':
     # 测试代码
