@@ -101,7 +101,7 @@ if __name__ == '__main__':
 
     pe = ParseExcel()
     """
-    # 测试所需 Excel 文件"XXX.xlsx"请自行创建
+    # #测试所需 Excel 文件"XXX.xlsx"请自行创建
     pe.loadWorkBook(u'/Users/dingyq/pyauto/datas/test.xlsx')
     print("通过名称获取 sheet 对象的名字:", \
           pe.getSheetByname(u'联系人'))
