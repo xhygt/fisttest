@@ -6,9 +6,11 @@ from config.VarConfig import  firefoxDriverFilePath
 from util.ObjectMap import  getElement
 from util.ClipboardUtil import  Clipboard
 from util.KeyBoardUtil import  KeyboardKeys
+from util.DirAndTime import *
 from util.WaitUtil import  WaitUtil
 from selenium.webdriver.chrome.options import Options
 import  time
+
 
 # 定义全局的 driver 变量
 driver = None
@@ -173,6 +175,43 @@ def maximize_browser():
     except Exception as e:
         raise e
 
+def capture_screen(*arg):
+    # 截取屏幕图片
+    global driver
+    # 获取当期时间，精确到毫秒
+    currTime = getCurrentTime()
+    # 拼接异常图片保存的绝对路径及名称
+    picNameAndPath = str(createCurrentDateDir())+"\\"+str(currTime)+".png"
+    try:
+        # 截取屏幕图片，并保存为本地文件
+        driver.get_screentshot_as_file(picNameAndPath.replace('\\',r'\\'))
+    except Exception as e:
+        raise e
+
+def waitPresenceOfElementLocated(locationType,locatorExpression,*arg):
+    ''' 显式等待页面元素出现在DOM中，但并不一定可见，
+                            存在则返回该页面元素对象 '''
+    global waitUtil
+    try:
+        waitUtil.presenceOfElementLocated(locationType,locatorExpression)
+    except Exception as e:
+        raise e
+
+def waitFrameToBeAvailableAndSwitchToIt(locationType,locatorExpression,*arg):
+    ''' 检查 frame 是否存在，存在则切换进 frame 控件中'''
+    global waitUtil
+    try:
+        waitUtil.frameToBeAvailableAndSwitchToIt(locationType,locatorExpression)
+    except Exception as e:
+        raise e
+
+def waitVisibilityOfElementLocated(locationType,locatorExpression,*arg):
+    ''' 显式等待页面元素出现在DOM中，并且可见，存在则返回该页面元素对象'''
+    global waitUtil
+    try:
+        waitUtil.visibilityOfElementLocated(locationType,locatorExpression)
+    except Exception as e:
+        raise e
 
 
 
