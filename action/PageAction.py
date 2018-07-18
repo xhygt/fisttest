@@ -63,8 +63,115 @@ def sleep(sleepSeconds, *arg):
     except Exception as e:
         raise e
 
+def clear(locationType,locatorExpression,*arg):
+    # 清楚输入框默认内容
+    global driver
+    try:
+        getElement(driver,locationType,locatorExpression).clear()
+    except Exception as e:
+        raise e
 
+def input_string(locationType,locatorExpression,inputContent):
+    # 在页面输入框中输入数据
+    global driver
+    try:
+        getElement(driver,locationType,
+                   locatorExpression).send_keys(inputContent)
+    except Exception as e:
+        raise e
 
+def click(locationType,locatorExpression,*arg):
+    # 单击页面元素
+    global driver
+    try:
+        getElement(driver,locationType,locatorExpression).click()
+    except Exception as e:
+        raise e
+
+def assert_string_in_pagesorce(assertString,*arg):
+    # 断言页面源码是否存在某关键字或关键字符串
+    try:
+        assert assertString in driver.page_souece, \
+            u"% s not found in page_source!" % assertString
+    except AssertionError as e:
+        raise AssertionError(e)
+    except Exception as  e:
+        raise e
+
+def assert_title(titleStr,*arg):
+    # 断言页面标题是否存在给定的关键字符串
+    global driver
+    try:
+        assert titleStr in driver.title, \
+            u"% s not found in page_source!" % titleStr
+    except AssertionError as e:
+        raise AssertionError(e)
+    except Exception as  e:
+        raise e
+
+def getTitle(*arg):
+    # 获取页面标题
+    global driver
+    try:
+        return driver.title
+    except Exception as e:
+        raise e
+
+def getPageSorce(*arg):
+    # 获取页面源码
+    global driver
+    try:
+        return driver.page_souece
+    except Exception as e:
+        raise e
+
+def switch_to_frame(locationType,frameLocatorExpression,*arg):
+    # 切换进入 frame
+    global driver
+    try:
+        driver.switch_to.frame(getElement
+                               (driver,locationType,frameLocatorExpression))
+    except Exception as e:
+        raise e
+
+def switch_to_default_content(*arg):
+    # 切出 frame ,回到默认对话框中
+    global driver
+    try:
+        driver.switch_to.default_content()
+    except Exception as e:
+        raise e
+
+def paste_string(pasteString,*arg):
+    # 模拟 Ctrl + V 操作
+    try:
+        Clipboard.setText(pasteString)
+        # 等待 2 秒，防止代码执行得太快，而未成功粘贴内容
+        time.sleep(2)
+        KeyboardKeys.twoKeys("ctrl","v")
+    except Exception as e:
+        raise e
+
+def press_tab_key(*arg):
+    # 模拟 Tab 键
+    try : KeyboardKeys.oneKey("tab")
+    except Exception as e:
+        raise e
+
+def press_enter_key(*arg):
+    # 模拟 Enter 键
+    try:
+        KeyboardKeys.oneKey("enter")
+    except Exception as e:
+        raise e
+
+def maximize_browser():
+    # 窗口最大化
+    global driver
+    try:
+        driver.maximize_window()
+    except Exception as e:
+        raise e
 
 
 

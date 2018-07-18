@@ -1,2 +1,3 @@
-def Clipboard(self):
-    print(1)
+class Clipboard():
+    def setText(self):
+        print(1)

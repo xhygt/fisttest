@@ -37,3 +37,4 @@ if __name__ == '__main__':
     aList = getElements(driver,"tag name","a")
     print(len(aList))
     driver.quit()
+    driver.find_element_by_xpath().send_keys()
