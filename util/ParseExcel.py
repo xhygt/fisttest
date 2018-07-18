@@ -92,7 +92,7 @@ class ParseExcel(object):
             try:
                 return sheet.cell(row = rowNo,cols = colsNo).value
             except Exception as e:
-                raise  e
+                raise e
         else:
             raise Exception("Insufficient Coordinates of cell !")
 
@@ -112,7 +112,7 @@ class ParseExcel(object):
             colsNo is not None:
             try:
                 return sheet.cell(row = rowNo,column = colsNo)
-            except Exception as  e:
+            except Exception as e:
                 raise e
         else:
             raise Exception("Insufficient Coordinates of cell !")
@@ -188,7 +188,4 @@ if __name__ == '__main__':
     #pe.writeCell(sheet,u'我爱祖国', rowNo = 10, colsNo = 10)
     #pe.writeCellCurrentTime(sheet,rowNo = 10 ,colsNo =10)
 """
-    pe.loadWorkBook(u'/Users/dingyq/pyauto/datas/test.xlsx')
-    sheet = pe.getSheetByIndex(0)
-    pe.getRow(sheet,1)
 
