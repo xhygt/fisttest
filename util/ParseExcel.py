@@ -145,7 +145,7 @@ class ParseExcel(object):
 
     def writeCellCurrentTime(self,sheet,coordinate = None,
                              rowNo = None,colsNo =None):
-        # 写如当前的时间，下标从 1开始
+        # 写入当前的时间，下标从 1开始
         now = int(time.time())
         timeArray = time.localtime(now)
         currentTime = time.strftime("%Y- %m- %d %H: %M: %S",timeArray)
