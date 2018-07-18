@@ -1,5 +1,6 @@
 # encoding =utf-8
 # openpyxl 只支持 .xlsx 格式
+
 import openpyxl
 from openpyxl.styles import  Border,Side,Font
 import time
@@ -54,8 +55,6 @@ class ParseExcel(object):
     def getStartColNumber(self,sheet):
         # 获取 sheet 中有数据区域的开始列好：
         return  sheet.min_column
-
-        # 方法问题，封存。
 
     def getRow(self,sheet,rowNo):
 
@@ -148,7 +147,7 @@ class ParseExcel(object):
         # 写入当前的时间，下标从 1开始
         now = int(time.time())
         timeArray = time.localtime(now)
-        currentTime = time.strftime("%Y- %m- %d %H: %M: %S",timeArray)
+        currentTime = time.strftime("%Y-%m-%d %H:%M:%S",timeArray)
         if coordinate is not None:
             try:
                 sheet.cell(coordinate = coordinate).value = currentTime
@@ -170,22 +169,19 @@ if __name__ == '__main__':
     # 测试代码
 
     pe = ParseExcel()
-    """
-    # #测试所需 Excel 文件"XXX.xlsx"请自行创建
     pe.loadWorkBook(u'/Users/dingyq/pyauto/datas/test.xlsx')
     print("通过名称获取 sheet 对象的名字:", \
           pe.getSheetByname(u'联系人'))
-
     print("通过 index 序号获取 sheet 对象的名字：", \
           pe.getSheetByIndex(0).title)
-    #sheet = pe.getSheetByIndex(0)
-    sheet = pe.getSheetByname(u'联系人')
-    print (type(sheet))
-    print(pe.getRowsNumber(sheet)) # 获取最大行
-    print(pe.getColsNumber(sheet)) # 获取最大列
+    sheet = pe.getSheetByIndex(0)
+    #print(pe.getColsNumber(sheet))
+    #print(pe.getRowsNumber(sheet))
+    print(pe.getRow(sheet,1))
 
-    #print(pe.getCellofValue(sheet,rowNo = 1, colsNo = 1))
-    #pe.writeCell(sheet,u'我爱祖国', rowNo = 10, colsNo = 10)
-    #pe.writeCellCurrentTime(sheet,rowNo = 10 ,colsNo =10)
-"""
+    pe.writeCell(sheet,u'我爱祖国', rowNo = pe.getRowsNumber(sheet)+1,
+                 colsNo = pe.getStartColNumber(sheet))
+    pe.writeCellCurrentTime(sheet,rowNo = pe.getRowsNumber(sheet),
+                 colsNo = pe.getStartColNumber(sheet)+1)
+    #print(pe.getRows(sheet))
 
