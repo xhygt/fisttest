@@ -22,4 +22,4 @@ reload(sys)
 excelObj = ParseExcel()
 
 # 将 Excel 数据文件加载到内存
-excelObj.loadWorkBook(dataFilepath)
+excelObj.loadWorkBook(dataFilePath)

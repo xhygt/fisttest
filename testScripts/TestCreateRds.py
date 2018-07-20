@@ -1,7 +1,7 @@
 # encoding = utf-8
 from . import *
 #from . import CreateContacts
-from WriteTestResult import writeTestResult
+from .WriteTestResult import writeTestResult
 from util.Log import *
 
 def TestCreateRds():
@@ -22,12 +22,15 @@ def TestCreateRds():
             if i.value.lower() == 'y' :
                 requiredCase += 1
                 # 获取测试用例表中，第idx+1行中用例执行时使用的框架类型
-                useFrameWorkName = execObj.getCellOfValue(
+                useFrameWorkName = excelObj.getCellOfValue(
                     caseSheet, rowNo= idx+2,colsNo=testCase_frameWorkName
                 )
                 # 获取测试用例表中，第idx+1行中执行用例的步骤sheet名
-                stepSheetName = execObj.getCellOfValue(
+                stepSheetName = excelObj.getCellOfValue(
                     caseSheet, rowNo= idx+2,colsNo=testCase_testStepSheetName
+                )
+                dataSheetName = excelObj.getCellOfValue(
+                    caseSheet, rowNo= idx+2,colsNo=testCase_dataSourceSheetName
                 )
                 logging.info(u"--执行测试用例'%s'---" %caseName)
 
@@ -38,9 +41,9 @@ def TestCreateRds():
                                                rowNo= idx + 2, colsNo= testCase_dataSourceSheetName
                     )
                      # 获取测试用例表中，第idx+1行中执行用例的步骤sheet对象
-                    stepSheetObj = execObj.getSheetByName(stepSheetName)
+                    stepSheetObj = excelObj.getSheetByName(stepSheetName)
                      # 获取测试用例表中，第idx+1行中执行用例的数据sheet对象
-                    dataSheetObj = execObj.getSheetByName(dataSheetName)
+                    dataSheetObj = excelObj.getSheetByName(dataSheetName)
                     # 通过数据驱动框架执行步骤
                     result = 1
 
@@ -55,21 +58,22 @@ def TestCreateRds():
                                         colsNo= "testCase", testResult= "faild")
                 elif useFrameWorkName == u"关键字":
                     logging.info(u"********调用关键字驱动*********")
-                    caseStepObj = execObj.getSheetByName(stepSheetName)
-                    stepNums = execObj.getRowsNumber(caseStepObj)
+                    caseStepObj = excelObj.getSheetByName(stepSheetName)
+                    stepNums = excelObj.getRowsNumber(caseStepObj)
                     successfulSteps = 0
                     logging.info(u"测试用例共'%s'步" %stepNums)
-                    for index in xrange(2, stepNums + 1):
-                        stepRow = execObj,getRow(caseStepObj, index)
+                    for index in range(2, stepNums + 1):
+                        stepRow = excelObj.getRow(caseStepObj, index)
                         #获取关键字作为调用的函数名
-                        keyWord = stepRow[testStep_keyWord - 1].value
+                        keyWord = stepRow[testStep_keyWords - 1].value
                         # 获取操作元素定位方式作为调用的函数的参数
                         locationType = stepRow[testStep_locationType -1].value
                         # 获取操作元素的定位表达式作为调用函数的参数
-                        locationExpression = stepRow[testStep_locationExpression - 1].value
+                        locationExpression = stepRow[testStep_locatorExpression - 1].value
                         # 获取操作值作为调用函数的参数
                         operateValue = stepRow[testStep_operateValue - 1].value
-                        if isinstance(operateValue, long):
+                        if isinstance(operateValue,int):
+                            # 如果 operateValue 的值为数字型，则将其转换为字符串，方便字符串拼接
                             operateValue =str(operateValue)
                         # 拼接需要执行的Python表达式，此表达式对应PageAction.py文件中的页面动作函数的字符串表示
                         tmpStr = "'%s','%s'" %(locationType.lower(),
@@ -87,20 +91,20 @@ def TestCreateRds():
                             eval(runStr)
                         except Exception as e:
                             # 获取详细的异常堆栈信息
-                            errorInfo = traceback.format_exec()
+                            errorInfo = traceback.format_exc()
                             logging.debug(u"执行步骤'%s'发生异常\n"
-                                          %stepRow[testStep_testDescribe - 1].value,
+                                          %stepRow[testStep_testStepDescribe - 1].value,
                                           errorInfo)
                             # 获取异常屏幕图片
                             capturePic = capture_screen()
                             writeTestResult(caseStepObj, rowNo= index,
                                             colsNo= "testStep", testResult= "faild",
-                                            errorInfo = str(errorInfo),
+                                            errorinfo = str(errorInfo),
                                             picPath = capturePic)
                         else:
                             successfulSteps += 1
                             logging.info(u"执行步骤'%s'成功\n"
-                                          %stepRow[testStep_testDescribe - 1].value)
+                                          %stepRow[testStep_testStepDescribe - 1].value)
                             writeTestResult(caseStepObj, rowNo= index,
                                             colsNo= "testStep", testResult= "pass")
                     if successfulSteps == stepNums - 1:
@@ -120,4 +124,4 @@ def TestCreateRds():
         logging.info(u"共%d条用例，%d用例被执行，成功执行%d条"
                      %(len(isExecuteColumn)-1,requiredCase,successfulCase))
     except Exception as e:
-        logging.debug(u"程序本身发生异常\n %s" %traceback.format_exec())
+        logging.debug(u"程序本身发生异常\n %s" %traceback.format_exc())

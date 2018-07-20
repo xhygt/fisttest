@@ -3,11 +3,12 @@ import os
 # 获取当前文件所在目录的父目录绝对路径
 
 parentDirPath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 try:
     if os.name == "posix":
         ieDriverFilePath = ""
-        chromeDriverFilePath = ""
-        firefoxDriverPath = ""
+        chromeDriverFilePath = parentDirPath +u"/webdriver/others/chromedriver"
+        firefoxDriverPath = parentDirPath + u"/webdriver/others/geckodriver"
         # 异常图片存放目录
         screenPicturesDir = parentDirPath + u"/exceptionpictures/"
         # 测试数据文件存放绝对路径
@@ -15,8 +16,8 @@ try:
 
     elif os.name == "nt":
         ieDriverFilePath = ""
-        chromeDriverFilePath = ""
-        firefoxDriverPath = ""
+        chromeDriverFilePath = parentDirPath +u"\\webdriver\\windows\\chromedriver.exe"
+        firefoxDriverPath = parentDirPath + u"\\webdriver\\windows\\geckodriver.exe"
         # 异常图片存放目录
         screenPicturesDir = parentDirPath + u"\\exceptionpictures\\"
         # 测试数据文件存放绝对路径
@@ -35,7 +36,7 @@ testCase_frameWorkName = 3
 testCase_testStepSheetName = 4
 testCase_dataSourceSheetName = 5
 testCase_isExecute = 6
-testCase_runTim = 7
+testCase_runTime = 7
 testCase_testResult = 8
 
 # 用例步骤表中，部分列对应的数字序号
@@ -45,6 +46,7 @@ testStep_keyWords = 2
 testStep_locationType = 3
 testStep_locatorExpression = 4
 testStep_operateValue = 5
+testStep_runTime = 6
 testStep_testResult = 7
 testStep_errorInfo = 8
 testStep_errorPic = 9
