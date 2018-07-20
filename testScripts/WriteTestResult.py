@@ -1,5 +1,5 @@
 #encoding = utf-8
-from . import *
+from .import *
 
 # 用例或用例步骤执行结束后，向excel中写执行结果信息
 def writeTestResult(sheetObj, rowNo, colsNo, testResult,

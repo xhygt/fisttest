@@ -169,7 +169,7 @@ if __name__ == '__main__':
     # 测试代码
 
     pe = ParseExcel()
-    pe.loadWorkBook(u'/Users/dingyq/pyauto/datas/test.xlsx')
+    pe.loadWorkBook(u'/Users/dingyq/pyauto/testdata/test.xlsx')
     print("通过名称获取 sheet 对象的名字:", \
           pe.getSheetByname(u'联系人'))
     print("通过 index 序号获取 sheet 对象的名字：", \
