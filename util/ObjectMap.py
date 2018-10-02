@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 # 获取单个页面元素对象
 def getElement(driver, locateType, locatorExpression):
     try:
-        element = WebDriverWait(driver, 3).until \
+        element = WebDriverWait(driver, 10).until \
             (lambda x: x.find_element(by=locateType, value=locatorExpression))
         return element
     except Exception as e:
@@ -20,8 +20,6 @@ def getElements(driver, locateType, locatorExpression):
         return elements
     except Exception as e:
         raise e
-
-
 if __name__ == '__main__':
     from selenium import webdriver
 

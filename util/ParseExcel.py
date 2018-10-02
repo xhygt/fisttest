@@ -4,7 +4,7 @@
 import openpyxl
 from openpyxl.styles import  Border,Side,Font
 import time
-
+from .Log import *
 class ParseExcel(object):
 
     def __init__(self):
@@ -23,10 +23,11 @@ class ParseExcel(object):
         self.excelFile = excelPathAndName
         return  self.workbook
 
-    def getSheetByname(self,sheetName):
+    def getSheetByName(self,sheetName):
         # 根据 sheet 名获取该 sheet 对象
         try:
             sheet = self.workbook.get_sheet_by_name(sheetName)
+            print("sheet")
             return  sheet
         except Exception as e:
             raise e
@@ -62,8 +63,9 @@ class ParseExcel(object):
         # 下表从 1 开始，sheet.rows[1]表示第一行
         try:
             #print(sheet.rows[rowNo])
-             for cell in list(sheet.rows)[rowNo-1]:
-                print(cell.value)
+             #for cell in list(sheet.rows)[rowNo-1]:
+               # print(cell.value)
+            return list(sheet.rows)[rowNo-1]
         except Exception as e:
             raise e
 
@@ -75,7 +77,13 @@ class ParseExcel(object):
                     print(cell.value)
         except Exception as e:
             raise e
-
+    def getColumn(self,sheet,colNo):
+        #获取sheet 中某一列，返回的是这一列所有的数据内容组成的ple
+        #下标从1开始，sheet.columns[1]标识第一列
+        try:
+            return list(sheet.columns)[colNo - 1]
+        except Exception as e:
+            raise e
     def getCellOfValue(self,sheet,coordinate = None,
                        rowNo = None,colsNo = None):
         # 根据单元格所在的位置索引获取该单元格中的值，下标从1开始
@@ -89,7 +97,7 @@ class ParseExcel(object):
         elif coordinate is None and rowNo is not None and \
             colsNo is not None:
             try:
-                return sheet.cell(row = rowNo,cols = colsNo).value
+                return sheet.cell(row = rowNo,column = colsNo).value
             except Exception as e:
                 raise e
         else:
@@ -169,11 +177,9 @@ if __name__ == '__main__':
     # 测试代码
 
     pe = ParseExcel()
-    pe.loadWorkBook(u'/Users/dingyq/pyauto/testdata/test.xlsx')
-    print("通过名称获取 sheet 对象的名字:", \
-          pe.getSheetByname(u'联系人'))
-    print("通过 index 序号获取 sheet 对象的名字：", \
-          pe.getSheetByIndex(0).title)
+    pe.loadWorkBook(u'D:\\python\\pyauto\\testdata\\test.xlsx')
+    print("通过名称获取 sheet 对象的名字:",pe.getSheetByName(u'联系人'))
+    print("通过 index 序号获取 sheet 对象的名字：",pe.getSheetByIndex(0).title)
     sheet = pe.getSheetByIndex(0)
     #print(pe.getColsNumber(sheet))
     #print(pe.getRowsNumber(sheet))

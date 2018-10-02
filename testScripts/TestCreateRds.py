@@ -1,25 +1,32 @@
 # encoding = utf-8
 from . import *
 #from . import CreateContacts
-from .WriteTestResult import writeTestResult
+from testScripts.WriteTestResult import writeTestResult
 from util.Log import *
+import openpyxl
+from openpyxl.styles import  Border,Side,Font
+import config.Globalvar as gl
 
 def TestCreateRds():
     try:
         # 测试Excel文件中的sheet名获取sheet对象
-        caseSheet = excelObj.getSheetByname(u"测试用例")
+        caseSheet = excelObj.getSheetByIndex(0)#getSheetByName(u"测试Dtcenter")
         # 获取测试用例sheet中是否执行列对象
         isExecuteColumn = excelObj.getColumn(caseSheet, testCase_isExecute)
         # 记录执行成功的用例个数
         successfulCase = 0
         # 记录需要执行的用例个数
         requiredCase = 0
-        for idx, i in enumerate(isExecuteColumn[1:]):
+        for idx,i in enumerate(isExecuteColumn[1:]):
             # 因为用例sheet中第一行为标题行，无须执行
             caseName = excelObj.getCellOfValue(caseSheet,
                                                rowNo= idx + 2, colsNo= testCase_testCaseName)
+            # 初始化全局变量字典
+            gl._init()
+            # 获取casename,用于设置截图文件夹名称
+            gl.set_value('testcasename_ex', caseName)
             # 循环遍历"测试用例"表中的测试用例，执行被设置为执行的用例
-            if i.value.lower() == 'y' :
+            if  i.value.lower() == 'y':
                 requiredCase += 1
                 # 获取测试用例表中，第idx+1行中用例执行时使用的框架类型
                 useFrameWorkName = excelObj.getCellOfValue(
@@ -80,13 +87,14 @@ def TestCreateRds():
                                                locationExpression.replace("'",'"')
                                                )if locationType and locationExpression else ""
                         if tmpStr:
-                            tmpStr +=",u" + operateValue + "'"\
+                            tmpStr +=",'" + operateValue + "'"\
                                 if operateValue else ""
                         else:
-                            tmpStr += "u'" + operateValue + "'"\
+                            tmpStr += "'" + operateValue + "'"\
                                 if operateValue else ""
-                        runStr = keyWord + "(" + tmpStr + ")"
-                        # print runStr
+                        # print(keyWord)
+                        runStr = keyWord +"("+ tmpStr +")"
+                        # print("run---->" + runStr)
                         try:
                             eval(runStr)
                         except Exception as e:
@@ -98,7 +106,7 @@ def TestCreateRds():
                             # 获取异常屏幕图片
                             capturePic = capture_screen()
                             writeTestResult(caseStepObj, rowNo= index,
-                                            colsNo= "testStep", testResult= "faild",
+                                            colsNo= "caseStep", testResult= "faild",
                                             errorinfo = str(errorInfo),
                                             picPath = capturePic)
                         else:
@@ -106,7 +114,7 @@ def TestCreateRds():
                             logging.info(u"执行步骤'%s'成功\n"
                                           %stepRow[testStep_testStepDescribe - 1].value)
                             writeTestResult(caseStepObj, rowNo= index,
-                                            colsNo= "testStep", testResult= "pass")
+                                            colsNo= "caseStep", testResult= "pass")
                     if successfulSteps == stepNums - 1:
                         successfulCase += 1
                         logging.info(u"用例%s执行通过 " %caseName)
@@ -121,7 +129,7 @@ def TestCreateRds():
                 writeTestResult(caseSheet, rowNo= idx + 2,
                                         colsNo= "testCase", testResult= "")
                 logging.info(u"用例%s被设置为忽略执行"%caseName)
-        logging.info(u"共%d条用例，%d用例被执行，成功执行%d条"
+        logging.info(u"共%d条用例，%d条用例被执行，成功执行%d条"
                      %(len(isExecuteColumn)-1,requiredCase,successfulCase))
     except Exception as e:
         logging.debug(u"程序本身发生异常\n %s" %traceback.format_exc())

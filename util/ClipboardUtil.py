@@ -1,5 +1,6 @@
 #encoding = utf-8
 import win32clipboard as w
+# import win32clipboard
 import win32con
 
 class Clipboard(object):

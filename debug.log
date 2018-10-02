@@ -1,0 +1,5 @@
+[0731/110607:ERROR:process_reader_win.cc(114)] NtOpenThread: {无法访问} 过程已请求访问一对象，但未给访问权限。  (0xc0000022)
+[0731/110607:ERROR:exception_snapshot_win.cc(87)] thread ID 7540 not found in process
+[0731/110607:WARNING:crash_report_exception_handler.cc(315)] ProcessSnapshotWin::Initialize failed
+[0830/133616.783:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: 管道已结束。 (0x6D)
+[0831/104441.752:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: 管道已结束。 (0x6D)

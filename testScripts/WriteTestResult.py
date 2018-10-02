@@ -5,7 +5,7 @@ from .import *
 def writeTestResult(sheetObj, rowNo, colsNo, testResult,
                     errorinfo = None, picPath = None):
     # 测试通过结果信息为绿色，失败为红色
-    colorDict = {"pass": green, "faild": red, "": None}
+    colorDict = {"pass": 'green', "faild": 'red', "": None}
 
     # 因为"测试用例"工作表和"用例步骤sheet表"中都有测试执行时间和
     # 测试结果列，定义此字典对象是为了区分具体应该写哪个工作表
@@ -14,7 +14,6 @@ def writeTestResult(sheetObj, rowNo, colsNo, testResult,
         "caseStep": [testStep_runTime, testStep_testResult],
         "dataSheet": [dataSource_runTime, dataSource_result]
     }
-
     try:
         # 在测试步骤sheet中，写入测试结果
         excelObj.writeCell(sheetObj, content = testResult,

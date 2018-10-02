@@ -1,0 +1,6 @@
+1532617533867	geckodriver	INFO	Listening on 127.0.0.1:53969
+1532617536967	mozprofile::profile	INFO	Using profile path C:\Users\WB-XHY~1\AppData\Local\Temp\rust_mozprofile.tAF3SJleL2e3
+1532617536984	geckodriver::marionette	INFO	Starting browser C:\Program Files\Mozilla Firefox\firefox.exe
+1532617537067	geckodriver::marionette	INFO	Connecting to Marionette on localhost:53978
+1532617546308	Marionette	INFO	Listening on port 2828
+1532617847419	addons.productaddons	WARN	Failed downloading via XHR, status: 0, reason: error
